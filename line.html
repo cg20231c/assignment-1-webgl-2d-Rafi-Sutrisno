@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebGL Application</title>
+</head>
+<body>
+    <canvas id="glCanvas" width="1150px" height="600"></canvas>
+    <script>
+        // Step 1: Set up the canvas
+        const canvas = document.getElementById('glCanvas');
+
+        // Step 2: Initialize WebGL context
+        const gl = canvas.getContext('webgl');
+
+        // Step 3: Compile shaders
+        const vertexShaderSource = `
+            // Vertex shader code (GLSL)
+            attribute vec2 a_position;
+            void main() {
+                // Transform vertex position
+                gl_Position = vec4(a_position, 0.0, 1.0);
+            }
+        `;
+
+        const fragmentShaderSource = `
+            // Fragment shader code (GLSL)
+            void main() {
+                // Set fragment color to blue sky
+                gl_FragColor = vec4(0.612, 0.965, 0.965, 1.0);    
+            }
+        `;
+
+        const vertexShader = gl.createShader(gl.VERTEX_SHADER);
+        gl.shaderSource(vertexShader, vertexShaderSource);
+        gl.compileShader(vertexShader);
+
+        const fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
+        gl.shaderSource(fragmentShader, fragmentShaderSource);
+        gl.compileShader(fragmentShader);
+
+        // Step 4: Create and link program
+        const program = gl.createProgram();
+        gl.attachShader(program, vertexShader);
+        gl.attachShader(program, fragmentShader);
+        gl.linkProgram(program);
+        gl.useProgram(program);
+
+        // Step 5: Set up attributes and uniforms
+        const positionAttributeLocation = gl.getAttribLocation(program, 'a_position');
+        const positionBuffer = gl.createBuffer();
+        const positionData = new Float32Array([
+
+            ////R
+                //1
+            -0.6, 0.5,
+            -0.6, -0.4,
+            -0.55, 0.5,
+            -0.55, -0.4,
+                //2
+            -0.55, 0.5,
+            -0.25, 0.5,
+            -0.55, 0.4,
+            -0.25, 0.4,
+                //3
+            -0.3, 0.4,
+            -0.3, 0,
+            -0.25, 0.4,
+            -0.25, 0,
+                //4
+            -0.3, 0.1,
+            -0.55, 0.1,
+            -0.3, 0,
+            -0.55, 0,
+                //5
+            -0.4, 0,
+            -0.37, -0.4,
+            -0.42, -0.4,
+            -0.45, 0,
+            
+            
+            ////A
+                //1
+            -0.6 + 0.5, 0.5,
+            -0.6 + 0.5, -0.4,
+            -0.55 + 0.5, 0.5,
+            -0.55 + 0.5, -0.4,
+                //2
+            -0.55 + 0.5, 0.5,
+            -0.25 + 0.5, 0.5,
+            -0.55 + 0.5, 0.4,
+            -0.25 + 0.5, 0.4,
+                //3
+            -0.3 + 0.5, 0.4,
+            -0.3 + 0.5, -0.4,
+            -0.25 + 0.5, 0.4,
+            -0.25 + 0.5, -0.4,
+                //4
+            -0.3 + 0.5, 0.1,
+            -0.55 + 0.5, 0.1,
+            -0.3 + 0.5, 0,
+            -0.55 + 0.5, 0,
+
+            ////F
+                //1
+            -0.6 + 0.5 + 0.5, 0.5,
+            -0.6 + 0.5 + 0.5, -0.4,
+            -0.55 + 0.5 + 0.5, 0.5,
+            -0.55 + 0.5 + 0.5, -0.4,
+                //2
+            -0.55 + 0.5 + 0.5, 0.5,
+            -0.25 + 0.5 + 0.5, 0.5,
+            -0.55 + 0.5 + 0.5, 0.4,
+            -0.25 + 0.5 + 0.5, 0.4,
+                //3
+            -0.3 + 0.5 + 0.5, 0.1,
+            -0.55 + 0.5 + 0.5, 0.1,
+            -0.3 + 0.5 + 0.5, 0,
+            -0.55 + 0.5 + 0.5, 0,
+                
+        ]);
+
+
+        // Step 6: Create and bind buffers
+        gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+        gl.bufferData(gl.ARRAY_BUFFER, positionData, gl.STATIC_DRAW);
+        gl.enableVertexAttribArray(positionAttributeLocation);
+        gl.vertexAttribPointer(positionAttributeLocation, 2, gl.FLOAT, false, 0, 0);
+
+        // Step 7: Rendering loop
+        gl.clearColor(0.0, 0.0, 0.0, 1.0);
+
+        function render() {
+            // Clear canvas
+            gl.clear(gl.COLOR_BUFFER_BIT);
+
+            // Draw the triangle using gl.drawArrays
+            gl.drawArrays(gl.LINE_LOOP, 0, 2);
+            gl.drawArrays(gl.LINE_LOOP, 2, 2);
+            gl.drawArrays(gl.LINE_LOOP, 4, 2);
+            gl.drawArrays(gl.LINE_LOOP, 6, 2);
+            gl.drawArrays(gl.LINE_LOOP, 8, 2);
+            gl.drawArrays(gl.LINE_LOOP, 10, 2);
+            gl.drawArrays(gl.LINE_LOOP, 12, 2);
+            gl.drawArrays(gl.LINE_LOOP, 14, 2);
+            gl.drawArrays(gl.LINE_LOOP, 16, 2);
+            gl.drawArrays(gl.LINE_LOOP, 18, 2);
+            gl.drawArrays(gl.LINE_LOOP, 20, 2);
+
+            gl.drawArrays(gl.LINE_LOOP, 22, 2);
+            gl.drawArrays(gl.LINE_LOOP, 24, 2);
+            gl.drawArrays(gl.LINE_LOOP, 26, 2);
+            gl.drawArrays(gl.LINE_LOOP, 28, 2);
+            gl.drawArrays(gl.LINE_LOOP, 30, 2);
+            gl.drawArrays(gl.LINE_LOOP, 32, 2);
+            gl.drawArrays(gl.LINE_LOOP, 34, 2);
+
+            gl.drawArrays(gl.LINE_LOOP, 36, 2);
+            gl.drawArrays(gl.LINE_LOOP, 38, 2);
+            gl.drawArrays(gl.LINE_LOOP, 40, 2);
+            gl.drawArrays(gl.LINE_LOOP, 42, 2);
+            gl.drawArrays(gl.LINE_LOOP, 44, 2);
+            gl.drawArrays(gl.LINE_LOOP, 46, 2);
+
+            requestAnimationFrame(render);
+        }
+        render();
+    </script>
+</body>
+</html>
