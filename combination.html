@@ -6,288 +6,291 @@
     <title>Document</title>
     <style>
         .canvas-container{
-            display: flex;
+            /* display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: center; */
         }
     </style>
 </head>
 <body>
-    <div class="canvas-container">
-        <canvas id="glCanvas" width="1150px" height="600" style="background-color: black; "></canvas>
-        <script>
-            const canvas = document.getElementById('glCanvas');
-            const gl = canvas.getContext('webgl');
     
-            // Step 3: Compile shaders
-            const vertexShaderSource = `
-                // Vertex shader code (GLSL)
-                attribute vec2 a_position;
-                attribute vec3 a_color;
-                varying vec3 v_color;
+    <canvas id="glCanvas" width="1150px" height="600" style="background-color: black; "></canvas>
+    <script>
+        // Step 1: Set up the canvas
+        const canvas = document.getElementById('glCanvas');
 
-                void main() {
-                    // Set the position of the vertex
-                    gl_Position = vec4(a_position, 0.0, 1.0);
-                    v_color = a_color;
-                }
-            `;
+        // Step 2: Initialize WebGL context
+        const gl = canvas.getContext('webgl');
 
-            const fragmentShaderSource = `
-                // Fragment shader code (GLSL)
-                precision mediump float;
-                varying vec3 v_color;
-                void main() {
-                    gl_FragColor = vec4(v_color, 1.0);
-                }
-            `;
+        // Step 3: Compile shaders
+        const vertexShaderSource = `
+            // Vertex shader code (GLSL)
+            attribute vec2 a_position;
+            attribute vec3 a_color;
+            varying vec3 v_color;
 
-            const vertexShader = gl.createShader(gl.VERTEX_SHADER);
-            gl.shaderSource(vertexShader, vertexShaderSource);
-            gl.compileShader(vertexShader);
+            void main() {
+                // Set the position of the vertex
+                gl_Position = vec4(a_position, 0.0, 1.0);
+                v_color = a_color;
+            }
+        `;
 
-            const fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
-            gl.shaderSource(fragmentShader, fragmentShaderSource);
-            gl.compileShader(fragmentShader);
+        const fragmentShaderSource = `
+            // Fragment shader code (GLSL)
+            precision mediump float;
+            varying vec3 v_color;
+            void main() {
+                gl_FragColor = vec4(v_color, 1.0);
+            }
+        `;
 
-            // Step 4: Create and link program
-            const program = gl.createProgram();
-            gl.attachShader(program, vertexShader);
-            gl.attachShader(program, fragmentShader);
-            gl.linkProgram(program);
-            gl.useProgram(program);
+        const vertexShader = gl.createShader(gl.VERTEX_SHADER);
+        gl.shaderSource(vertexShader, vertexShaderSource);
+        gl.compileShader(vertexShader);
 
-            // Step 5: Set up attributes and uniforms
-            const positionAttributeLocation =  gl.getAttribLocation(program, 'a_position')
-            const positionBuffer = gl.createBuffer();
-            const positionData = new Float32Array([
-            
-            ////R
-                //1
-            -0.6, 0.5, 0.612, 0.965, 0.965, 
-            -0.6, -0.4, 0.612, 0.965, 0.965, 
-            -0.55, 0.5, 0.612, 0.965, 0.965, 
-            -0.55, -0.4, 0.612, 0.965, 0.965, 
-                //2
-            -0.55, 0.5, 0.612, 0.965, 0.965, 
-            -0.25, 0.5, 0.612, 0.965, 0.965, 
-            -0.55, 0.4, 0.612, 0.965, 0.965, 
-            -0.25, 0.4, 0.612, 0.965, 0.965, 
-                //3
-            -0.3, 0.4, 0.612, 0.965, 0.965, 
-            -0.3, 0, 0.612, 0.965, 0.965, 
-            -0.25, 0.4, 0.612, 0.965, 0.965, 
-            -0.25, 0, 0.612, 0.965, 0.965, 
-                //4
-            -0.3, 0.1, 0.612, 0.965, 0.965, 
-            -0.55, 0.1, 0.612, 0.965, 0.965, 
-            -0.3, 0, 0.612, 0.965, 0.965, 
-            -0.55, 0, 0.612, 0.965, 0.965, 
-                //5
-            -0.4, 0, 0.612, 0.965, 0.965, 
-            -0.37, -0.4, 0.612, 0.965, 0.965, 
-            -0.42, -0.4, 0.612, 0.965, 0.965, 
-            -0.45, 0, 0.612, 0.965, 0.965, 
-            
-            
-            ////A
-                //1
-            -0.6 + 0.5, 0.5, 0.612, 0.965, 0.965, 
-            -0.6 + 0.5, -0.4, 0.612, 0.965, 0.965, 
-            -0.55 + 0.5, 0.5, 0.612, 0.965, 0.965, 
-            -0.55 + 0.5, -0.4, 0.612, 0.965, 0.965, 
-                //2
-            -0.55 + 0.5, 0.5, 0.612, 0.965, 0.965, 
-            -0.25 + 0.5, 0.5, 0.612, 0.965, 0.965, 
-            -0.55 + 0.5, 0.4, 0.612, 0.965, 0.965, 
-            -0.25 + 0.5, 0.4, 0.612, 0.965, 0.965, 
-                //3
-            -0.3 + 0.5, 0.4, 0.612, 0.965, 0.965, 
-            -0.3 + 0.5, -0.4, 0.612, 0.965, 0.965, 
-            -0.25 + 0.5, 0.4, 0.612, 0.965, 0.965, 
-            -0.25 + 0.5, -0.4, 0.612, 0.965, 0.965, 
-                //4
-            -0.3 + 0.5, 0.1, 0.612, 0.965, 0.965, 
-            -0.55 + 0.5, 0.1, 0.612, 0.965, 0.965, 
-            -0.3 + 0.5, 0, 0.612, 0.965, 0.965, 
-            -0.55 + 0.5, 0, 0.612, 0.965, 0.965, 
+        const fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
+        gl.shaderSource(fragmentShader, fragmentShaderSource);
+        gl.compileShader(fragmentShader);
 
-            ////F
-                //1
-            -0.6 + 0.5 + 0.5, 0.5, 0.612, 0.965, 0.965, 
-            -0.6 + 0.5 + 0.5, -0.4, 0.612, 0.965, 0.965, 
-            -0.55 + 0.5 + 0.5, 0.5, 0.612, 0.965, 0.965, 
-            -0.55 + 0.5 + 0.5, -0.4, 0.612, 0.965, 0.965, 
-                //2
-            -0.55 + 0.5 + 0.5, 0.5, 0.612, 0.965, 0.965,
-            -0.25 + 0.5 + 0.5, 0.5, 0.612, 0.965, 0.965, 
-            -0.55 + 0.5 + 0.5, 0.4, 0.612, 0.965, 0.965,
-            -0.25 + 0.5 + 0.5, 0.4, 0.612, 0.965, 0.965, 
-                //3
-            -0.3 + 0.5 + 0.5, 0.1, 0.612, 0.965, 0.965, 
-            -0.55 + 0.5 + 0.5, 0.1, 0.612, 0.965, 0.965, 
-            -0.3 + 0.5 + 0.5, 0, 0.612, 0.965, 0.965, 
-            -0.55 + 0.5 + 0.5, 0, 0.612, 0.965, 0.965,             
+        // Step 4: Create and link program
+        const program = gl.createProgram();
+        gl.attachShader(program, vertexShader);
+        gl.attachShader(program, fragmentShader);
+        gl.linkProgram(program);
+        gl.useProgram(program);
 
-            ///////kedua
+        // Step 5: Set up attributes and uniforms
+        const positionAttributeLocation =  gl.getAttribLocation(program, 'a_position')
+        const positionBuffer = gl.createBuffer();
 
-            ///////R
-            -0.1 - 0.42, 0 -0.25,  0.0, 0.0, 0.0, 
-            -0.1 - 0.42, 0.7 -0.25,   0.0, 0.0, 0.0,  
-            -0.05 - 0.42,  0 -0.25,     0.0, 0.0, 0.0, 
+        const positionData = new Float32Array([
+            ///Lines
+        ////R
+            //1
+        -0.6, 0.5, 0.612, 0.965, 0.965, 
+        -0.6, -0.4, 0.612, 0.965, 0.965, 
+        -0.55, 0.5, 0.612, 0.965, 0.965, 
+        -0.55, -0.4, 0.612, 0.965, 0.965, 
+            //2
+        -0.55, 0.5, 0.612, 0.965, 0.965, 
+        -0.25, 0.5, 0.612, 0.965, 0.965, 
+        -0.55, 0.4, 0.612, 0.965, 0.965, 
+        -0.25, 0.4, 0.612, 0.965, 0.965, 
+            //3
+        -0.3, 0.4, 0.612, 0.965, 0.965, 
+        -0.3, 0, 0.612, 0.965, 0.965, 
+        -0.25, 0.4, 0.612, 0.965, 0.965, 
+        -0.25, 0, 0.612, 0.965, 0.965, 
+            //4
+        -0.3, 0.1, 0.612, 0.965, 0.965, 
+        -0.55, 0.1, 0.612, 0.965, 0.965, 
+        -0.3, 0, 0.612, 0.965, 0.965, 
+        -0.55, 0, 0.612, 0.965, 0.965, 
+            //5
+        -0.4, 0, 0.612, 0.965, 0.965, 
+        -0.37, -0.4, 0.612, 0.965, 0.965, 
+        -0.42, -0.4, 0.612, 0.965, 0.965, 
+        -0.45, 0, 0.612, 0.965, 0.965, 
+        
+        
+        ////A
+            //1
+        -0.6 + 0.5, 0.5, 0.612, 0.965, 0.965, 
+        -0.6 + 0.5, -0.4, 0.612, 0.965, 0.965, 
+        -0.55 + 0.5, 0.5, 0.612, 0.965, 0.965, 
+        -0.55 + 0.5, -0.4, 0.612, 0.965, 0.965, 
+            //2
+        -0.55 + 0.5, 0.5, 0.612, 0.965, 0.965, 
+        -0.25 + 0.5, 0.5, 0.612, 0.965, 0.965, 
+        -0.55 + 0.5, 0.4, 0.612, 0.965, 0.965, 
+        -0.25 + 0.5, 0.4, 0.612, 0.965, 0.965, 
+            //3
+        -0.3 + 0.5, 0.4, 0.612, 0.965, 0.965, 
+        -0.3 + 0.5, -0.4, 0.612, 0.965, 0.965, 
+        -0.25 + 0.5, 0.4, 0.612, 0.965, 0.965, 
+        -0.25 + 0.5, -0.4, 0.612, 0.965, 0.965, 
+            //4
+        -0.3 + 0.5, 0.1, 0.612, 0.965, 0.965, 
+        -0.55 + 0.5, 0.1, 0.612, 0.965, 0.965, 
+        -0.3 + 0.5, 0, 0.612, 0.965, 0.965, 
+        -0.55 + 0.5, 0, 0.612, 0.965, 0.965, 
 
-             -0.1 - 0.42, 0.7 -0.25,    0.0, 0.0, 0.0, 
-             0.15 - 0.42, 0.7 -0.25,    0.0, 0.0, 0.0, 
-             -0.1 - 0.42,  0.65 -0.25,  0.0, 0.0, 0.0, 
+        ////F
+            //1
+        -0.6 + 0.5 + 0.5, 0.5, 0.612, 0.965, 0.965, 
+        -0.6 + 0.5 + 0.5, -0.4, 0.612, 0.965, 0.965, 
+        -0.55 + 0.5 + 0.5, 0.5, 0.612, 0.965, 0.965, 
+        -0.55 + 0.5 + 0.5, -0.4, 0.612, 0.965, 0.965, 
+            //2
+        -0.55 + 0.5 + 0.5, 0.5, 0.612, 0.965, 0.965,
+        -0.25 + 0.5 + 0.5, 0.5, 0.612, 0.965, 0.965, 
+        -0.55 + 0.5 + 0.5, 0.4, 0.612, 0.965, 0.965,
+        -0.25 + 0.5 + 0.5, 0.4, 0.612, 0.965, 0.965, 
+            //3
+        -0.3 + 0.5 + 0.5, 0.1, 0.612, 0.965, 0.965, 
+        -0.55 + 0.5 + 0.5, 0.1, 0.612, 0.965, 0.965, 
+        -0.3 + 0.5 + 0.5, 0, 0.612, 0.965, 0.965, 
+        -0.55 + 0.5 + 0.5, 0, 0.612, 0.965, 0.965,             
 
-             0.15 - 0.42, 0.7 -0.25,  0.0, 0.0, 0.0,
-             0.13 - 0.42, 0.7 -0.25,  0.0, 0.0, 0.0, 
-             0.15 - 0.42, 0.35 -0.25,  0.0, 0.0, 0.0, 
 
-             0.15 - 0.42, 0.35 -0.25,  0.0, 0.0, 0.0, 
-             0.15 - 0.42, 0.39 -0.25,  0.0, 0.0, 0.0, 
-             -0.1 - 0.42, 0.35 -0.25,  0.0, 0.0, 0.0, 
+            ///Triangle
+        ///////R
+        -0.1 - 0.42, 0 -0.25,  0.0, 0.0, 0.0, 
+        -0.1 - 0.42, 0.7 -0.25,   0.0, 0.0, 0.0,  
+        -0.05 - 0.42,  0 -0.25,     0.0, 0.0, 0.0, 
 
-             -0.1 - 0.42, 0.38 -0.25,  0.0, 0.0, 0.0, 
-             0.15 - 0.42, 0 -0.25,  0.0, 0.0, 0.0, 
-             0.15 - 0.42, 0.05 -0.25,  0.0, 0.0, 0.0, 
+            -0.1 - 0.42, 0.7 -0.25,    0.0, 0.0, 0.0, 
+            0.15 - 0.42, 0.7 -0.25,    0.0, 0.0, 0.0, 
+            -0.1 - 0.42,  0.65 -0.25,  0.0, 0.0, 0.0, 
 
-            ////////A
+            0.15 - 0.42, 0.7 -0.25,  0.0, 0.0, 0.0,
+            0.13 - 0.42, 0.7 -0.25,  0.0, 0.0, 0.0, 
+            0.15 - 0.42, 0.35 -0.25,  0.0, 0.0, 0.0, 
 
-             -0.1 + 0.4 - 0.35, 0 -0.25,    0.0, 0.0, 0.0, 
+            0.15 - 0.42, 0.35 -0.25,  0.0, 0.0, 0.0, 
+            0.15 - 0.42, 0.39 -0.25,  0.0, 0.0, 0.0, 
+            -0.1 - 0.42, 0.35 -0.25,  0.0, 0.0, 0.0, 
+
+            -0.1 - 0.42, 0.38 -0.25,  0.0, 0.0, 0.0, 
+            0.15 - 0.42, 0 -0.25,  0.0, 0.0, 0.0, 
+            0.15 - 0.42, 0.05 -0.25,  0.0, 0.0, 0.0, 
+
+        ////////A
+
+            -0.1 + 0.4 - 0.35, 0 -0.25,    0.0, 0.0, 0.0, 
+        -0.1 + 0.4 - 0.35, 0.7 -0.25,    0.0, 0.0, 0.0, 
+        -0.05 + 0.4 - 0.35,  0 -0.25,     0.0, 0.0, 0.0, 
+
             -0.1 + 0.4 - 0.35, 0.7 -0.25,    0.0, 0.0, 0.0, 
-            -0.05 + 0.4 - 0.35,  0 -0.25,     0.0, 0.0, 0.0, 
+            0.15 + 0.4 - 0.35, 0.7 -0.25,    0.0, 0.0, 0.0, 
+            -0.1 + 0.4 - 0.35,  0.65 -0.25,  0.0, 0.0, 0.0, 
 
-             -0.1 + 0.4 - 0.35, 0.7 -0.25,    0.0, 0.0, 0.0, 
-             0.15 + 0.4 - 0.35, 0.7 -0.25,    0.0, 0.0, 0.0, 
-             -0.1 + 0.4 - 0.35,  0.65 -0.25,  0.0, 0.0, 0.0, 
+            0.15 + 0.4 - 0.35, 0.7 -0.25,  0.0, 0.0, 0.0, 
+            0.13 + 0.4 - 0.35, 0.7 -0.25,  0.0, 0.0, 0.0, 
+            0.15 + 0.4 - 0.35, 0.35 -0.25,  0.0, 0.0, 0.0, 
 
-             0.15 + 0.4 - 0.35, 0.7 -0.25,  0.0, 0.0, 0.0, 
-             0.13 + 0.4 - 0.35, 0.7 -0.25,  0.0, 0.0, 0.0, 
-             0.15 + 0.4 - 0.35, 0.35 -0.25,  0.0, 0.0, 0.0, 
+            0.15 + 0.4 - 0.35, 0.35 -0.25,  0.0, 0.0, 0.0, 
+            0.15 + 0.4 - 0.35, 0.39 -0.25,  0.0, 0.0, 0.0, 
+            -0.1 + 0.4 - 0.35, 0.35 -0.25,  0.0, 0.0, 0.0, 
 
-             0.15 + 0.4 - 0.35, 0.35 -0.25,  0.0, 0.0, 0.0, 
-             0.15 + 0.4 - 0.35, 0.39 -0.25,  0.0, 0.0, 0.0, 
-             -0.1 + 0.4 - 0.35, 0.35 -0.25,  0.0, 0.0, 0.0, 
-
-             0.1 + 0.4 - 0.35, 0 -0.25,  0.0, 0.0, 0.0, 
-             0.15 + 0.4 - 0.35, 0 -0.25,  0.0, 0.0, 0.0, 
-             0.15 + 0.4 - 0.35, 0.7 -0.25,  0.0, 0.0, 0.0, 
+            0.1 + 0.4 - 0.35, 0 -0.25,  0.0, 0.0, 0.0, 
+            0.15 + 0.4 - 0.35, 0 -0.25,  0.0, 0.0, 0.0, 
+            0.15 + 0.4 - 0.35, 0.7 -0.25,  0.0, 0.0, 0.0, 
 
 
-             /////////F
-             -0.1 + 0.8 - 0.3, 0 -0.25,    0.0, 0.0, 0.0, 
-            -0.1 + 0.8 - 0.3, 0.7 -0.25,    0.0, 0.0, 0.0, 
-            -0.05 + 0.8 - 0.3,  0 -0.25,     0.0, 0.0, 0.0, 
+            /////////F
+            -0.1 + 0.8 - 0.3, 0 -0.25,    0.0, 0.0, 0.0, 
+        -0.1 + 0.8 - 0.3, 0.7 -0.25,    0.0, 0.0, 0.0, 
+        -0.05 + 0.8 - 0.3,  0 -0.25,     0.0, 0.0, 0.0, 
 
-             -0.1 + 0.8 - 0.3, 0.7 -0.25,   0.0, 0.0, 0.0, 
-             0.15 + 0.8 - 0.3, 0.7 -0.25,    0.0, 0.0, 0.0, 
-             -0.1 + 0.8 - 0.3,  0.65 -0.25,  0.0, 0.0, 0.0, 
+            -0.1 + 0.8 - 0.3, 0.7 -0.25,   0.0, 0.0, 0.0, 
+            0.15 + 0.8 - 0.3, 0.7 -0.25,    0.0, 0.0, 0.0, 
+            -0.1 + 0.8 - 0.3,  0.65 -0.25,  0.0, 0.0, 0.0, 
 
-             0.15 + 0.8 - 0.3, 0.35 -0.25,  0.0, 0.0, 0.0, 
-             0.15 + 0.8 - 0.3, 0.39 -0.25,  0.0, 0.0, 0.0, 
-             -0.1 + 0.8 - 0.3, 0.35 -0.25,  0.0, 0.0, 0.0, 
+            0.15 + 0.8 - 0.3, 0.35 -0.25,  0.0, 0.0, 0.0, 
+            0.15 + 0.8 - 0.3, 0.39 -0.25,  0.0, 0.0, 0.0, 
+            -0.1 + 0.8 - 0.3, 0.35 -0.25,  0.0, 0.0, 0.0, 
 
-            ])
+        ])
 
-            const colorAttributeLocation = gl.getAttribLocation(program, 'a_color');
-            const colorBuffer = gl.createBuffer();
-
-
-            // Step 6: Create and bind buffers
-            gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-            gl.bufferData(gl.ARRAY_BUFFER, positionData, gl.STATIC_DRAW);
-            gl.enableVertexAttribArray(positionAttributeLocation);
-            gl.vertexAttribPointer(positionAttributeLocation, 2, gl.FLOAT, false, 20, 0);
-
-            gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
-            gl.bufferData(gl.ARRAY_BUFFER, positionData, gl.STATIC_DRAW);
-            gl.enableVertexAttribArray(colorAttributeLocation);
-            gl.vertexAttribPointer(colorAttributeLocation, 3, gl.FLOAT, false, 20, 8);
+        const colorAttributeLocation = gl.getAttribLocation(program, 'a_color');
+        const colorBuffer = gl.createBuffer();
 
 
-            // Step 7: Rendering loop
-            // Step 7: Rendering loop
+        // Step 6: Create and bind buffers
+        gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+        gl.bufferData(gl.ARRAY_BUFFER, positionData, gl.STATIC_DRAW);
+        gl.enableVertexAttribArray(positionAttributeLocation);
+        gl.vertexAttribPointer(positionAttributeLocation, 2, gl.FLOAT, false, 20, 0);
+
+        gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
+        gl.bufferData(gl.ARRAY_BUFFER, positionData, gl.STATIC_DRAW);
+        gl.enableVertexAttribArray(colorAttributeLocation);
+        gl.vertexAttribPointer(colorAttributeLocation, 3, gl.FLOAT, false, 20, 8);
+
+
+        // Step 7: Rendering loop
+        // Step 7: Rendering loop
+        gl.clearColor(0.0, 0.0, 0.0, 1.0);
+
+        function render() {
             gl.clearColor(0.0, 0.0, 0.0, 1.0);
 
-            function render() {
-                gl.clearColor(0.0, 0.0, 0.0, 1.0);
+            // Clear canvas
+            gl.clear(gl.COLOR_BUFFER_BIT);
 
-                // Clear canvas
-                gl.clear(gl.COLOR_BUFFER_BIT);
+            // Draw the triangle using gl.drawArrays
+            gl.drawArrays(gl.LINE_LOOP, 0, 2);
+            gl.drawArrays(gl.LINE_LOOP, 2, 2);
+            gl.drawArrays(gl.LINE_LOOP, 4, 2);
+            gl.drawArrays(gl.LINE_LOOP, 6, 2);
+            gl.drawArrays(gl.LINE_LOOP, 8, 2);
+            gl.drawArrays(gl.LINE_LOOP, 10, 2);
+            gl.drawArrays(gl.LINE_LOOP, 12, 2);
+            gl.drawArrays(gl.LINE_LOOP, 14, 2);
+            gl.drawArrays(gl.LINE_LOOP, 16, 2);
+            gl.drawArrays(gl.LINE_LOOP, 18, 2);
+            gl.drawArrays(gl.LINE_LOOP, 20, 2);
 
-                // Draw the triangle using gl.drawArrays
-                gl.drawArrays(gl.LINE_LOOP, 0, 2);
-                gl.drawArrays(gl.LINE_LOOP, 2, 2);
-                gl.drawArrays(gl.LINE_LOOP, 4, 2);
-                gl.drawArrays(gl.LINE_LOOP, 6, 2);
-                gl.drawArrays(gl.LINE_LOOP, 8, 2);
-                gl.drawArrays(gl.LINE_LOOP, 10, 2);
-                gl.drawArrays(gl.LINE_LOOP, 12, 2);
-                gl.drawArrays(gl.LINE_LOOP, 14, 2);
-                gl.drawArrays(gl.LINE_LOOP, 16, 2);
-                gl.drawArrays(gl.LINE_LOOP, 18, 2);
-                gl.drawArrays(gl.LINE_LOOP, 20, 2);
+            gl.drawArrays(gl.LINE_LOOP, 22, 2);
+            gl.drawArrays(gl.LINE_LOOP, 24, 2);
+            gl.drawArrays(gl.LINE_LOOP, 26, 2);
+            gl.drawArrays(gl.LINE_LOOP, 28, 2);
+            gl.drawArrays(gl.LINE_LOOP, 30, 2);
+            gl.drawArrays(gl.LINE_LOOP, 32, 2);
+            gl.drawArrays(gl.LINE_LOOP, 34, 2);
 
-                gl.drawArrays(gl.LINE_LOOP, 22, 2);
-                gl.drawArrays(gl.LINE_LOOP, 24, 2);
-                gl.drawArrays(gl.LINE_LOOP, 26, 2);
-                gl.drawArrays(gl.LINE_LOOP, 28, 2);
-                gl.drawArrays(gl.LINE_LOOP, 30, 2);
-                gl.drawArrays(gl.LINE_LOOP, 32, 2);
-                gl.drawArrays(gl.LINE_LOOP, 34, 2);
+            gl.drawArrays(gl.LINE_LOOP, 36, 2);
+            gl.drawArrays(gl.LINE_LOOP, 38, 2);
+            gl.drawArrays(gl.LINE_LOOP, 40, 2);
+            gl.drawArrays(gl.LINE_LOOP, 42, 2);
+            gl.drawArrays(gl.LINE_LOOP, 44, 2);
+            gl.drawArrays(gl.LINE_LOOP, 46, 2);
 
-                gl.drawArrays(gl.LINE_LOOP, 36, 2);
-                gl.drawArrays(gl.LINE_LOOP, 38, 2);
-                gl.drawArrays(gl.LINE_LOOP, 40, 2);
-                gl.drawArrays(gl.LINE_LOOP, 42, 2);
-                gl.drawArrays(gl.LINE_LOOP, 44, 2);
-                gl.drawArrays(gl.LINE_LOOP, 46, 2);
+            requestAnimationFrame(render);
+        }
 
-                requestAnimationFrame(render);
+        function render2(){
+            gl.clearColor(0.612, 0.965, 0.965, 1.0);
+            gl.clear(gl.COLOR_BUFFER_BIT);
+
+            gl.drawArrays(gl.TRIANGLES, 48, 3);
+            gl.drawArrays(gl.TRIANGLES, 51, 3);
+            gl.drawArrays(gl.TRIANGLES, 54, 3);
+            gl.drawArrays(gl.TRIANGLES, 57, 3);
+            gl.drawArrays(gl.TRIANGLES, 60, 3);
+
+
+            gl.drawArrays(gl.TRIANGLES, 63, 3);
+            gl.drawArrays(gl.TRIANGLES, 66, 3);
+            gl.drawArrays(gl.TRIANGLES, 69, 3);
+            gl.drawArrays(gl.TRIANGLES, 72, 3);
+            gl.drawArrays(gl.TRIANGLES, 75, 3);
+
+
+            gl.drawArrays(gl.TRIANGLES, 78, 3);
+            gl.drawArrays(gl.TRIANGLES, 81, 3);
+            gl.drawArrays(gl.TRIANGLES, 84, 3);
+
+            requestAnimationFrame(render2);
+        }
+
+        let currentCode = 1; // Start with WebGL Code 1
+
+        function switchWebGLCode() {
+            if (currentCode === 1) {
+                render2();
+            } else {
+                render();
             }
 
-            function render2(){
-                gl.clearColor(0.612, 0.965, 0.965, 1.0);
-                gl.clear(gl.COLOR_BUFFER_BIT);
+            currentCode = (currentCode === 1) ? 2 : 1; // Toggle between 1 and 2
+        }
 
-                gl.drawArrays(gl.TRIANGLES, 48, 3);
-                gl.drawArrays(gl.TRIANGLES, 51, 3);
-                gl.drawArrays(gl.TRIANGLES, 54, 3);
-                gl.drawArrays(gl.TRIANGLES, 57, 3);
-                gl.drawArrays(gl.TRIANGLES, 60, 3);
-
-
-                gl.drawArrays(gl.TRIANGLES, 63, 3);
-                gl.drawArrays(gl.TRIANGLES, 66, 3);
-                gl.drawArrays(gl.TRIANGLES, 69, 3);
-                gl.drawArrays(gl.TRIANGLES, 72, 3);
-                gl.drawArrays(gl.TRIANGLES, 75, 3);
-
-
-                gl.drawArrays(gl.TRIANGLES, 78, 3);
-                gl.drawArrays(gl.TRIANGLES, 81, 3);
-                gl.drawArrays(gl.TRIANGLES, 84, 3);
-
-                requestAnimationFrame(render2);
-            }
-
-            let currentCode = 1; // Start with WebGL Code 1
-
-            function switchWebGLCode() {
-                if (currentCode === 1) {
-                    render2();
-                } else {
-                    render();
-                }
-
-                currentCode = (currentCode === 1) ? 2 : 1; // Toggle between 1 and 2
-            }
-
-            setInterval(switchWebGLCode,3000);
-            
-        </script>
-    </div>
+        setInterval(switchWebGLCode,3000);
+        
+    </script>
    
 </body>
 </html>
