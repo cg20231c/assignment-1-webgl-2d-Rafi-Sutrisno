@@ -277,9 +277,9 @@
 
         function switchWebGLCode() {
             if (currentCode === 1) {
-                render2();
-            } else {
                 render();
+            } else {
+                render2();
             }
 
             currentCode = (currentCode === 1) ? 2 : 1; // Toggle between 1 and 2
