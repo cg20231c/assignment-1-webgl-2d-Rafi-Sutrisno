@@ -5,6 +5,9 @@
 
 ## Chat Gpt:
 
+![Pertanyaan 1](/Gambar/Q1.jpeg)
+![Jawaban 1](/Gambar/A1.jpeg)
+
 ## Penjelasan Code:
 
 ```
