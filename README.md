@@ -266,7 +266,9 @@ const positionData = new Float32Array([
             requestAnimationFrame(render);
         }
     ```
-    Fungsi render() : pada fungsi ini saya mengubah warna background menjadi hitam menggunakan gl.clearcolor, lalu saya mulai menggambar menggunakan draw arrays mulai dari array 1 sampai array 47 dengan setiap gambar diambil 2 array jadi kelipatan 2. 
+    Fungsi render() : pada fungsi ini saya mengubah warna background menjadi hitam menggunakan 
+    gl.clearcolor, lalu saya mulai menggambar menggunakan draw arrays mulai dari array 1 sampai 
+    array 47 dengan setiap gambar diambil 2 array jadi kelipatan 2. 
     ```
     function render2(){
             gl.clearColor(0.612, 0.965, 0.965, 1.0);
@@ -293,7 +295,9 @@ const positionData = new Float32Array([
             requestAnimationFrame(render2);
         }
     ```
-    Fungsi render2() : pada fungsi ini saya mengubah warna background menjadi skyblue menggunakan gl.clearcolor, lalu saya mulai menggambar menggunakan draw arrays mulai dari array 48 sampai array 86 dengan setiap gambar diambil 3 array jadi kelipatan 3. 
+    Fungsi render2() : pada fungsi ini saya mengubah warna background menjadi skyblue menggunakan 
+    gl.clearcolor, lalu saya mulai menggambar menggunakan draw arrays mulai dari array 48 sampai 
+    array 86 dengan setiap gambar diambil 3 array jadi kelipatan 3. 
 
     Setelah itu untuk melakukan render 2 fungsi tadi secara bergantian saya menggunakan setInterval dengan interval 3 detik, dimana yang di interval kan adalah fungsi switchWebGLCode.
     Pada fungsi tersebut akan ada variabel currentCode yang berfungsi seperti boolean, lalu setiap loop pada setInterval variabel tersebut akan ditukar2 agar fungsi render yang berjalan bergantian.
