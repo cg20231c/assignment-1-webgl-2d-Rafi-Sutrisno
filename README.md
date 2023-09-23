@@ -1,7 +1,9 @@
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/UQL1B0Jv)
 
 ## Progress :
-1. Membuat tulisan 3 huruf awal menggunakan 
+1. Membuat tulisan 3 huruf awal menggunakan lines.
+2. Membuat tulisan 3 huruf awal menggunakan triangle.
+3. menggabungkan keduanya dengan fungsi render berbeda dan setinterval
 
 ## Chat Gpt:
 
