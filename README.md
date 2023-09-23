@@ -225,7 +225,8 @@ const positionData = new Float32Array([
         gl.vertexAttribPointer(colorAttributeLocation, 3, gl.FLOAT, false, 20, 8);
     ```
 
-    Kode dibawah adalah kode untuk render, dimana saya membuat 2 fungsi render yang masing masing untuk merender lines dan triangle.
+    Kode dibawah adalah kode untuk render, dimana saya membuat 2 fungsi render yang masing masing 
+    untuk merender lines dan triangle.
     
     ```
     // Step 7: Rendering loop
@@ -299,8 +300,11 @@ const positionData = new Float32Array([
     gl.clearcolor, lalu saya mulai menggambar menggunakan draw arrays mulai dari array 48 sampai 
     array 86 dengan setiap gambar diambil 3 array jadi kelipatan 3. 
 
-    Setelah itu untuk melakukan render 2 fungsi tadi secara bergantian saya menggunakan setInterval dengan interval 3 detik, dimana yang di interval kan adalah fungsi switchWebGLCode.
-    Pada fungsi tersebut akan ada variabel currentCode yang berfungsi seperti boolean, lalu setiap loop pada setInterval variabel tersebut akan ditukar2 agar fungsi render yang berjalan bergantian.
+    Setelah itu untuk melakukan render 2 fungsi tadi secara bergantian saya menggunakan 
+    setInterval dengan interval 3 detik, dimana yang di interval kan adalah fungsi switchWebGLCode.
+    Pada fungsi tersebut akan ada variabel currentCode yang berfungsi seperti boolean, lalu 
+    setiap loop pada setInterval variabel tersebut akan ditukar2 agar fungsi render yang berjalan 
+    bergantian.
     ```
     let currentCode = 1; // Start with WebGL Code 1
 
